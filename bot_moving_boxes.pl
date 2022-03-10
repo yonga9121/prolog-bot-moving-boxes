@@ -32,6 +32,7 @@ move(state(X,free,X,Y), state(Y,free,X,Y)) :-
 move(state(X,free,Y,X), state(Y,free,Y,X)) :- 
   	opp_room(X,Y),
     not(unsafe(state(Y,free,Y,X))).  
+    not(unsafe(Next)), 
 
 
 opp_room(h1, h2).
@@ -111,29 +112,30 @@ moves([State, _, Depth, _, _], Rest_open_pq, Closed_set,[Next,State,New_D,H,S], 
     heuristic(Next, Goal, H),
     S is New_D + H.
 
-heuristic(state(h1,free,h1,h1), state(h2,free,h2,h2), H) :- H is 8.
+heuristic(state(X,free,X,X), state(Y,free,Y,Y), H) :- H is 8.
 
-heuristic(state(h1,busy,h1,h1), state(h2,free,h2,h2), H) :- H is 7.
+heuristic(state(X,busy,X,X), state(Y,free,Y,Y), H) :- H is 7.
 
-heuristic(state(h2,busy,h2,h1), state(h2,free,h2,h2), H) :- H is 5.
+heuristic(state(Y,busy,Y,_), state(Y,free,Y,Y), H) :- H is 5.
 
-heuristic(state(h2,busy,h1,h2), state(h2,free,h2,h2), H) :- H is 5.
+heuristic(state(Y,busy,_,Y), state(Y,free,Y,Y), H) :- H is 5.
 
-heuristic(state(h2,free,h2,h1), state(h2,free,h2,h2), H) :- H is 4.
+heuristic(state(Y,free,Y,_), state(Y,free,Y,Y), H) :- H is 4.
 
-heuristic(state(h2,free,h1,h2), state(h2,free,h2,h2), H) :- H is 4.
+heuristic(state(Y,free,_,Y), state(Y,free,Y,Y), H) :- H is 4.
 
-heuristic(state(h1,free,h2,h1), state(h2,free,h2,h2), H) :- H is 3.
+heuristic(state(X,free,Y,X), state(Y,free,Y,Y), H) :- H is 3.
 
-heuristic(state(h1,free,h1,h2), state(h2,free,h2,h2), H) :- H is 3.
+heuristic(state(X,free,X,Y), state(Y,free,Y,Y), H) :- H is 3.
 
-heuristic(state(h1,busy,h2,h1), state(h2,free,h2,h2), H) :- H is 2.
+heuristic(state(X,busy,Y,X), state(Y,free,Y,Y), H) :- H is 2.
 
-heuristic(state(h1,busy,h1,h2), sta/te(h2,free,h2,h2), H) :- H is 2.
+heuristic(state(X,busy,X,Y), sta/te(Y,free,Y,Y), H) :- H is 2.
 
-heuristic(state(h2,busy,h2,h2), state(h2,free,h2,h2), H) :- H is 1.
+heuristic(state(Y,busy,Y,Y), state(Y,free,Y,Y), H) :- H is 1.
 
-heuristic(state(h2,free,h2,h2), state(h2,free,h2,h2), H) :- H is 0.
+heuristic(state(Y,free,Y,Y), state(Y,free,Y,Y), H) :- H is 0.
+
 
 
 go(Start, Goal) :-
