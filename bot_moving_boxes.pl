@@ -32,7 +32,6 @@ move(state(X,free,X,Y), state(Y,free,X,Y)) :-
 move(state(X,free,Y,X), state(Y,free,Y,X)) :- 
   	opp_room(X,Y),
     not(unsafe(state(Y,free,Y,X))).  
-    not(unsafe(Next)), 
 
 
 opp_room(h1, h2).
@@ -144,5 +143,4 @@ go(Start, Goal) :-
     heuristic(Start, Goal, H),
     insert_pq([Start, nil, 0, H, H], Open, Open_pq),
     path(Open_pq, Closed_set, Goal).
-
 
